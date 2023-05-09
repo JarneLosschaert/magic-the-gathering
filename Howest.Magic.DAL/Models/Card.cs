@@ -20,7 +20,7 @@ namespace Howest.MagicCards.DAL.Models
         public string Flavor { get; set; }
         public int ArtistId { get; set; }
         public string Number { get; set; }
-        public string Pwer { get; set; }
+        public string Power { get; set; }
         public string Toughness { get; set; }
         public string Layout { get; set; }
         public int MutiverseId { get; set; }

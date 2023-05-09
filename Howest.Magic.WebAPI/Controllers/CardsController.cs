@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Howest.MagicCards.DAL.Repositories;
+using Howest.MagicCards.DAL.Models;
 
 namespace Howest.MagicCards.WebAPI.Controllers
 {
@@ -16,15 +17,21 @@ namespace Howest.MagicCards.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetCards()
+        public ActionResult<IEnumerable<Card>> GetCards()
         {
             return Ok(_cardRepo.GetAllCards());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCard(int id)
+        public ActionResult<Card> GetCard(int id)
         {
             return Ok(_cardRepo.GetCardbyId(id));
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Card>> GetCardsbyFilter([FromQuery] string filter)
+        {
+            return Ok();
         }
     }
 }
