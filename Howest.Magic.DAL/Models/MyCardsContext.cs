@@ -14,7 +14,5 @@ namespace Howest.MagicCards.DAL.Models
         }
 
         public virtual DbSet<Card> Cards { get; set; }
-
     }
-}
 }

@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace Howest.MagicCards.DAL.Models
 {
-    internal class Colors
+    public class Color
     {
+        public Color() 
+        {
+            CardColors = new HashSet<CardColor>();
+        }
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+
+        public virtual ICollection<CardColor> CardColors { get; set; }
     }
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Howest.MagicCards.DAL.Models
 {
-    internal class CardColors
+    public class CardColor
     {
+        public int CardId { get; set; }
+        public int ColorId { get; set; }
     }
 }

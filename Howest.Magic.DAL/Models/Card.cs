@@ -9,11 +9,16 @@ namespace Howest.MagicCards.DAL.Models
 {
     public class Card
     {
+        public Card()
+        {
+            CardTypes = new HashSet<CardType>();
+            CardColors = new HashSet<CardColor>();
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string ManaCost { get; set; }
         public string ConvertedManaCost { get; set; }
-        public string CardType { get; set; } // CardType is a class
+        public string Type { get; set; }
         public string RarityCode { get; set; }
         public string SetCode { get; set; }
         public string Text { get; set; }
@@ -30,5 +35,12 @@ namespace Howest.MagicCards.DAL.Models
         public string OriginalType { get; set; }
         public string MtgId { get; set; }
         public string Variations { get; set; }
+
+        public virtual Rarity Rarity { get; set; }
+        public virtual Set Set { get; set; }
+        public virtual Artist Artist { get; set; }
+
+        public virtual ICollection<CardColor> CardColors { get; set; }
+        public virtual ICollection<CardType> CardTypes { get; set; }
     }
 }

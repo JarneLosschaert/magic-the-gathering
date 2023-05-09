@@ -1,4 +1,5 @@
 using Howest.MagicCards.Shared;
+using Howest.MagicCards.Shared.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +11,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(new Type[] {
-                                             typeof(Shared.Mappings.BooksProfile),
-                                             typeof(Shared.Mappings.PublishersProfile),
-                                             typeof(Shared.Mappings.AuthorsProfile)});
-
+    typeof(CardProfile) 
+});
+                                          
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

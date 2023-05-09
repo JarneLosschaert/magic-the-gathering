@@ -11,7 +11,10 @@ namespace Howest.MagicCards.Shared.Mappings
 {
     public class CardProfile: Profile
     {
-       CreateMap<>
+       public CardProfile()
+        {
+            CreateMap<Card, CardDTO>();
+        }
             
     }
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Howest.MagicCards.DAL.Models
 {
-    internal class Artist
+    public class Artist
     {
+        public int Id { get; set; }
+        public string FullName { get; set; }
     }
 }

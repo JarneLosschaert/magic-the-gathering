@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.DAL.Models;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Howest.MagicCards.Shared.DTO;
 
 namespace Howest.MagicCards.WebAPI.Controllers
 {
@@ -9,23 +12,32 @@ namespace Howest.MagicCards.WebAPI.Controllers
     [ApiController]
     public class CardsController : ControllerBase
     {
-        private readonly CardRepository _cardRepo;
+        private readonly ICardRepository _cardRepo;
+        private readonly IMapper _mapper;
+   
 
-        public CardsController()
+        public CardsController(ICardRepository cardRepository, IMapper mapper)
         {
-            _cardRepo = new CardRepository();
+            _cardRepo = cardRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Card>> GetCards()
+        public async Task<ActionResult<IEnumerable<CardDetailReadDTO>>> GetCards()
         {
-            return Ok(_cardRepo.GetAllCards());
+            return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
+                    ? Ok(await allCards
+                            .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
+                            .ToListAsync())
+                    : NotFound("No cards found");
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<Card> GetCard(int id)
+        [HttpGet("{id:int}", Name = "GetCardById")]
+        public async Task<ActionResult<CardReadDTO>> GetCard(int id)
         {
-            return Ok(_cardRepo.GetCardbyId(id));
+            return (await _cardRepo.GetCardbyIdAsync(id) is Card foundCard)
+                    ? Ok(_mapper.Map<CardReadDTO>(foundCard))
+                    : NotFound($"No card found with id {id}");
         }
 
         [HttpGet]

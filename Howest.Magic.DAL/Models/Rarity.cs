@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Howest.MagicCards.DAL.Models
 {
-    internal class Rarities
+    public class Rarity
     {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
     }
 }
