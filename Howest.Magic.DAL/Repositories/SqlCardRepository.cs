@@ -1,10 +1,11 @@
 ﻿using Howest.MagicCards.DAL.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Howest.MagicCards.DAL.Repositories
 {
@@ -24,7 +25,9 @@ namespace Howest.MagicCards.DAL.Repositories
                                             .Include(c => c.Rarity)
                                             .Include(c => c.Set)
                                             .Include(c => c.CardColors)
-                                            .ThenInclude(cc => cc.Color)
+                                                .ThenInclude(cc => cc.Color)
+                                            .Include(c => c.CardTypes)
+                                                .ThenInclude(ct => ct.Type)
                                             .Select(c => c);
             return allBooks;
         }
@@ -32,9 +35,15 @@ namespace Howest.MagicCards.DAL.Repositories
         public async Task<Card?> GetCardbyIdAsync(int id)
         {
             Card? singleBook = await _db.Cards
-                                    //.Include(b => b.Publisher)
-                                    .SingleOrDefaultAsync(c => c.Id == id);
-
+                .Include(c => c.Artist)
+                .Include(c => c.Rarity)
+                .Include(c => c.Set)
+                .Include(c => c.CardColors)
+                .Include(c => c.CardColors)
+                    .ThenInclude(cc => cc.Color)
+                .Include(c => c.CardTypes)
+                    .ThenInclude(ct => ct.Type)
+                .SingleOrDefaultAsync(c => c.Id == id);
 
             return singleBook;
         }

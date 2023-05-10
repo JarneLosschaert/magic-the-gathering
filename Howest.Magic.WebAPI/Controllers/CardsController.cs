@@ -5,6 +5,7 @@ using Howest.MagicCards.DAL.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Howest.MagicCards.Shared.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace Howest.MagicCards.WebAPI.Controllers
 {
