@@ -10,5 +10,8 @@ namespace Howest.MagicCards.DAL.Models
     {
         public int CardId { get; set; }
         public int TypeId { get; set; }
+
+        public virtual Card Card { get; set; }
+        public virtual Type Type { get; set; }
     }
 }
