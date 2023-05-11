@@ -53,7 +53,7 @@ namespace Howest.MagicCards.DAL.Models
                 entity.HasKey(e => e.Id)
                     .HasName("PK__types__3213E83F62126D10");
 
-                entity.ToTable("artists");
+                entity.ToTable("types");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id");
@@ -156,7 +156,7 @@ namespace Howest.MagicCards.DAL.Models
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
                     .IsUnicode(false)
-                    .HasColumnName("id");
+                    .HasColumnName("name");
 
                 entity.Property(e => e.ManaCost)
                     .HasMaxLength(255)
@@ -261,11 +261,13 @@ namespace Howest.MagicCards.DAL.Models
 
                 entity.HasOne(c => c.Rarity)
                     .WithMany(a => a.Cards)
+                    .HasPrincipalKey(r => r.Code)
                     .HasForeignKey(c => c.RarityCode)
                     .HasConstraintName("FK_cards_rarities");
 
                 entity.HasOne(c => c.Set)
                     .WithMany(a => a.Cards)
+                    .HasPrincipalKey(s => s.Code)
                     .HasForeignKey(c => c.SetCode)
                     .HasConstraintName("FK_cards_sets");
             });

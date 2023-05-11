@@ -8,7 +8,7 @@ namespace Howest.MagicCards.Shared.DTO
 {
     public record CardDetailReadDTO
     {
-        public int? Id { get; init; }
+        public long? Id { get; init; }
         public string Name { get; init; }
         public string ManaCost { get; init; }
         public string ConvertedManaCost { get; init; }

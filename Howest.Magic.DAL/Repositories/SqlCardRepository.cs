@@ -20,7 +20,7 @@ namespace Howest.MagicCards.DAL.Repositories
 
         public IQueryable<Card> GetAllCards()
         {
-            IQueryable<Card> allBooks = _db.Cards
+            IQueryable<Card> allCards = _db.Cards
                                             .Include(c => c.Artist)
                                             .Include(c => c.Rarity)
                                             .Include(c => c.Set)
@@ -29,12 +29,12 @@ namespace Howest.MagicCards.DAL.Repositories
                                             .Include(c => c.CardTypes)
                                                 .ThenInclude(ct => ct.Type)
                                             .Select(c => c);
-            return allBooks;
+            return allCards;
         }
 
         public async Task<Card?> GetCardbyIdAsync(int id)
         {
-            Card? singleBook = await _db.Cards
+            Card? singleCard = await _db.Cards
                 .Include(c => c.Artist)
                 .Include(c => c.Rarity)
                 .Include(c => c.Set)
@@ -45,7 +45,7 @@ namespace Howest.MagicCards.DAL.Repositories
                     .ThenInclude(ct => ct.Type)
                 .SingleOrDefaultAsync(c => c.Id == id);
 
-            return singleBook;
+            return singleCard;
         }
     }
 }

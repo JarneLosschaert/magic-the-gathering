@@ -12,7 +12,7 @@ namespace Howest.MagicCards.DAL.Models
         {
             Cards = new HashSet<Card>();
         }
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
 

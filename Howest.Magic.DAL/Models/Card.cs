@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Howest.MagicCards.DAL.Models
             CardTypes = new HashSet<CardType>();
             CardColors = new HashSet<CardColor>();
         }
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string ManaCost { get; set; }
         public string ConvertedManaCost { get; set; }
@@ -23,12 +24,12 @@ namespace Howest.MagicCards.DAL.Models
         public string SetCode { get; set; }
         public string Text { get; set; }
         public string Flavor { get; set; }
-        public int ArtistId { get; set; }
+        public long ArtistId { get; set; }
         public string Number { get; set; }
         public string Power { get; set; }
         public string Toughness { get; set; }
         public string Layout { get; set; }
-        public int MutiverseId { get; set; }
+        public int? MutiverseId { get; set; }
         public string OriginalImageUrl { get; set; }
         public string Image { get; set; }
         public string OriginalText { get; set; }

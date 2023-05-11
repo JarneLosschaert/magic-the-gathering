@@ -40,11 +40,5 @@ namespace Howest.MagicCards.WebAPI.Controllers
                     ? Ok(_mapper.Map<CardReadDTO>(foundCard))
                     : NotFound($"No card found with id {id}");
         }
-
-        [HttpGet]
-        public ActionResult<IEnumerable<Card>> GetCardsbyFilter([FromQuery] string filter)
-        {
-            return Ok();
-        }
     }
 }

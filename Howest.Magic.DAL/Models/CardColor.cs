@@ -8,7 +8,10 @@ namespace Howest.MagicCards.DAL.Models
 {
     public class CardColor
     {
-        public int CardId { get; set; }
-        public int ColorId { get; set; }
+        public long CardId { get; set; }
+        public long ColorId { get; set; }
+
+        public virtual Card Card { get; set; }
+        public virtual Color Color { get; set; }
     }
 }

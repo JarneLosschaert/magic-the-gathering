@@ -1,7 +1,11 @@
+using Howest.MagicCards.DAL.Models;
+using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.Shared;
 using Howest.MagicCards.Shared.Mappings;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+ConfigurationManager config = builder.Configuration;
 
 // Add services to the container.
 
@@ -10,8 +14,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(new Type[] {
-    typeof(CardProfile) 
+builder.Services.AddDbContext<MyCardsContext>
+    (options => options.UseSqlServer(config.GetConnectionString("CardsDb")));
+builder.Services.AddScoped<ICardRepository, SqlCardRepository>();
+
+builder.Services.AddAutoMapper(new System.Type[] {
+    typeof(CardProfile)
 });
                                           
 var app = builder.Build();
