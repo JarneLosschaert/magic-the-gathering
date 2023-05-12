@@ -11,7 +11,9 @@ using Howest.MagicCards.Shared.Filters;
 
 namespace Howest.MagicCards.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.1")]
+    [ApiVersion("1.5")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class CardsController : ControllerBase
     {
@@ -25,30 +27,71 @@ namespace Howest.MagicCards.WebAPI.Controllers
             _mapper = mapper;
         }
 
+        [MapToApiVersion("1.1")]
         [HttpGet]
         [ProducesResponseType(typeof(PagedResponse<IEnumerable<CardDetailReadDTO>>), 200)]
         [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
         public async Task<ActionResult<PagedResponse<IEnumerable<CardDetailReadDTO>>>> GetCards([FromQuery] PaginationFilter paginationFilter, [FromQuery] CardFilter filter)
         {
-            return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
+            try
+            {
+                return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
                     ? Ok(await allCards
                             .Where(c => c.Name.Contains(filter.Name) && c.Artist.FullName.Contains(filter.ArtistName))
-                            // madd more filter
+                            // add more filter
                             .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
                             .Take(paginationFilter.PageSize)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
                             .ToListAsync())
-                    : NotFound("No cards found");
+                    : NotFound(new Response<CardDetailReadDTO>()
+                    {
+                        Succeeded = false,
+                        Errors = new string[] { $"Status code: {StatusCodes.Status404NotFound}" },
+                        Message = $"No cards found"
+                    });
+
+            }
+            catch (Exception error)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response<CardDetailReadDTO>()
+                    {
+                        Succeeded = false,
+                        Errors = new string[] { $"Status code: {StatusCodes.Status500InternalServerError}" },
+                        Message = $"({error.Message}) "
+                    });
+            }
         }
 
+        [MapToApiVersion("1.5")]
         [HttpGet("{id:int}", Name = "GetCardById")]
         [ProducesResponseType(typeof(CardReadDTO), 200)]
         [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 500)]
         public async Task<ActionResult<CardReadDTO>> GetCard(int id)
         {
-            return (await _cardRepo.GetCardbyIdAsync(id) is Card foundCard)
+            try
+            {
+                return (await _cardRepo.GetCardbyIdAsync(id) is Card foundCard)
                     ? Ok(_mapper.Map<CardReadDTO>(foundCard))
-                    : NotFound($"No card found with id {id}");
+                    : NotFound(new Response<CardReadDTO>()
+                    {
+                        Succeeded = false,
+                        Errors = new string[] { $"Status code: {StatusCodes.Status404NotFound}" },
+                        Message = $"Card with id {id} was not found..."
+                    });
+            }
+            catch (Exception error)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response<CardDetailReadDTO>()
+                    {
+                        Succeeded = false,
+                        Errors = new string[] { $"Status code: {StatusCodes.Status500InternalServerError}" },
+                        Message = $"({error.Message}) "
+                    });
+            }
         }
     }
 }
