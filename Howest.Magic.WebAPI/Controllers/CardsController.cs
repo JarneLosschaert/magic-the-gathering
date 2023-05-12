@@ -6,6 +6,8 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Howest.MagicCards.Shared.DTO;
 using Microsoft.EntityFrameworkCore;
+using Howest.MagicCards.WebAPI.Wrappers;
+using Howest.MagicCards.Shared.Filters;
 
 namespace Howest.MagicCards.WebAPI.Controllers
 {
@@ -24,10 +26,12 @@ namespace Howest.MagicCards.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CardDetailReadDTO>>> GetCards()
+        public async Task<ActionResult<PagedResponse<IEnumerable<CardDetailReadDTO>>>> GetCards([FromQuery] PaginationFilter paginationFilter)
         {
             return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
                     ? Ok(await allCards
+                            .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
+                            .Take(paginationFilter.PageSize)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
                             .ToListAsync())
                     : NotFound("No cards found");
