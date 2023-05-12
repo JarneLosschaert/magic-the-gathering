@@ -26,10 +26,12 @@ namespace Howest.MagicCards.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedResponse<IEnumerable<CardDetailReadDTO>>>> GetCards([FromQuery] PaginationFilter paginationFilter)
+        public async Task<ActionResult<PagedResponse<IEnumerable<CardDetailReadDTO>>>> GetCards([FromQuery] PaginationFilter paginationFilter, [FromQuery] CardFilter filter)
         {
             return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
                     ? Ok(await allCards
+                            .Where(c => c.Name.Contains(filter.Name) && c.Artist.FullName.Contains(filter.ArtistName))
+                            // madd more filter
                             .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
                             .Take(paginationFilter.PageSize)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
