@@ -19,15 +19,15 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1.5", new OpenApiInfo
     {
-        Title = "Cards API version 1.5",
+        Title = "Magic cards API version 1.5",
         Version = "v1.5",
-        Description = "API to manage cards"
+        Description = "API to manage the magic cards"
     });
     c.SwaggerDoc("v1.1", new OpenApiInfo
     {
-        Title = "Cards API version 1.1",
+        Title = "Magic cards API version 1.1",
         Version = "v1.1",
-        Description = "API to manage cards without sorting and detail of a card"
+        Description = "API to manage magic cards without sorting and detail of a card"
     });
 });
 
@@ -76,8 +76,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1.5/swagger.json", "My Cards API v1.5");
-        c.SwaggerEndpoint("/swagger/v1.1/swagger.json", "My Cards API v1.1");
+        c.SwaggerEndpoint("/swagger/v1.5/swagger.json", "My Magic cards API v1.5");
+        c.SwaggerEndpoint("/swagger/v1.1/swagger.json", "My Magic cards API v1.1");
     });
 
 }
