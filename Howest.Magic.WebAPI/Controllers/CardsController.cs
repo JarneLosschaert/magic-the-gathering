@@ -15,6 +15,7 @@ namespace Howest.MagicCards.WebAPI.Controllers
     [ApiVersion("1.5")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class CardsController : ControllerBase
     {
         private readonly ICardRepository _cardRepo;
@@ -27,6 +28,7 @@ namespace Howest.MagicCards.WebAPI.Controllers
             _mapper = mapper;
         }
 
+        // 1.5 with sort and detail of card
         [MapToApiVersion("1.1")]
         [HttpGet]
         [ProducesResponseType(typeof(PagedResponse<IEnumerable<CardDetailReadDTO>>), 200)]
@@ -64,7 +66,6 @@ namespace Howest.MagicCards.WebAPI.Controllers
             }
         }
 
-        [MapToApiVersion("1.5")]
         [HttpGet("{id:int}", Name = "GetCardById")]
         [ProducesResponseType(typeof(CardReadDTO), 200)]
         [ProducesResponseType(typeof(string), 404)]

@@ -17,17 +17,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
+    c.SwaggerDoc("v1.5", new OpenApiInfo
     {
-        Title = "Cards API version 1",
-        Version = "v1",
-        Description = "API to manage books without sorting and detail of a card"
+        Title = "Cards API version 1.5",
+        Version = "v1.5",
+        Description = "API to manage cards"
     });
-    c.SwaggerDoc("v2", new OpenApiInfo
+    c.SwaggerDoc("v1.1", new OpenApiInfo
     {
-        Title = "Cards API version 2",
-        Version = "v2",
-        Description = "API to manage books"
+        Title = "Cards API version 1.1",
+        Version = "v1.1",
+        Description = "API to manage cards without sorting and detail of a card"
     });
 });
 
@@ -49,6 +49,19 @@ builder.Services.AddApiVersioning(o => {
                                     new HeaderApiVersionReader("api-version"),
                                     new MediaTypeApiVersionReader("v"));
 });
+builder.Services.AddVersionedApiExplorer(
+    options =>
+    {
+        // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
+        // note: the specified format code will format the version as "'v'major[.minor][-status]"
+        options.GroupNameFormat = "'v'VVV";
+
+        // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
+        // can also be used to control the format of the API version in route templates
+        options.SubstituteApiVersionInUrl = true;
+    }
+);
+
 
 
 
@@ -63,8 +76,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My cards API v1");
-        c.SwaggerEndpoint("/swagger/v2/swagger.json", "My cards API v2");
+        c.SwaggerEndpoint("/swagger/v1.5/swagger.json", "My Cards API v1.5");
+        c.SwaggerEndpoint("/swagger/v1.1/swagger.json", "My Cards API v1.1");
     });
 
 }
