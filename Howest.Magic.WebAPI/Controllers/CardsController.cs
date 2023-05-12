@@ -26,6 +26,8 @@ namespace Howest.MagicCards.WebAPI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(PagedResponse<IEnumerable<CardDetailReadDTO>>), 200)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<PagedResponse<IEnumerable<CardDetailReadDTO>>>> GetCards([FromQuery] PaginationFilter paginationFilter, [FromQuery] CardFilter filter)
         {
             return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
@@ -40,6 +42,8 @@ namespace Howest.MagicCards.WebAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetCardById")]
+        [ProducesResponseType(typeof(CardReadDTO), 200)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<CardReadDTO>> GetCard(int id)
         {
             return (await _cardRepo.GetCardbyIdAsync(id) is Card foundCard)
