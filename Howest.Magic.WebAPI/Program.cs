@@ -49,7 +49,7 @@ builder.Services.AddAutoMapper(new System.Type[] {
 builder.Services.AddApiVersioning(o => {
     o.ReportApiVersions = true;
     o.AssumeDefaultVersionWhenUnspecified = true;
-    o.DefaultApiVersion = new ApiVersion(1, 0);
+    o.DefaultApiVersion = new ApiVersion(1, 5);
 });
 builder.Services.AddVersionedApiExplorer(
     options =>
