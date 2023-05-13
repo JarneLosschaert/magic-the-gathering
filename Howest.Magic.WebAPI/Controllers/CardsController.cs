@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.DAL.Models;
 using AutoMapper;
@@ -8,6 +7,8 @@ using Howest.MagicCards.Shared.DTO;
 using Microsoft.EntityFrameworkCore;
 using Howest.MagicCards.WebAPI.Wrappers;
 using Howest.MagicCards.Shared.Filters;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Howest.MagicCards.WebAPI.Controllers
 {
@@ -18,14 +19,16 @@ namespace Howest.MagicCards.WebAPI.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class CardsController : ControllerBase
     {
+        private const string _cacheKey = "Allcards";
+        private readonly IDistributedCache _cache;
         private readonly ICardRepository _cardRepo;
         private readonly IMapper _mapper;
-   
 
-        public CardsController(ICardRepository cardRepository, IMapper mapper)
+        public CardsController(ICardRepository cardRepository, IMapper mapper, IDistributedCache memoryCache)
         {
             _cardRepo = cardRepository;
             _mapper = mapper;
+            _cache = memoryCache;
         }
 
         // 1.5 with sort and detail of card
@@ -40,8 +43,8 @@ namespace Howest.MagicCards.WebAPI.Controllers
             {
                 return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
                     ? Ok(await allCards
-                            .Where(c => c.Name.Contains(filter.Name) && c.Artist.FullName.Contains(filter.ArtistName))
-                            // add more filter
+                            .Where(c => c.Set.Name.Contains(filter.SetName) && c.Artist.FullName.Contains(filter.ArtistName) && c.Rarity.Name.Contains(filter.RarityName))
+                            .Where(c => c.Type.Contains(filter.CardType) && c.Name.Contains(filter.CardName) && c.Text.Contains(filter.CardText))
                             .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
                             .Take(paginationFilter.PageSize)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
@@ -80,7 +83,7 @@ namespace Howest.MagicCards.WebAPI.Controllers
                     {
                         Succeeded = false,
                         Errors = new string[] { $"Status code: {StatusCodes.Status404NotFound}" },
-                        Message = $"Card with id {id} was not found..."
+                        Message = $"Card with id {id} was not found"
                     });
             }
             catch (Exception error)
