@@ -45,6 +45,8 @@ namespace Howest.MagicCards.WebAPI.Controllers
                     ? Ok(await allCards
                             .Where(c => c.Set.Name.Contains(filter.SetName) && c.Artist.FullName.Contains(filter.ArtistName) && c.Rarity.Name.Contains(filter.RarityName))
                             .Where(c => c.Type.Contains(filter.CardType) && c.Name.Contains(filter.CardName) && c.Text.Contains(filter.CardText))
+                            .OrderBy(c => filter.OrderByNameAscending ? c.Name : null)
+                            .ThenByDescending(c => filter.OrderByNameAscending ? null : c.Name)
                             .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
                             .Take(paginationFilter.PageSize)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)

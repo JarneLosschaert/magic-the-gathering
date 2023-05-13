@@ -28,8 +28,8 @@ namespace Howest.MagicCards.Shared.Mappings
                             opt => opt.MapFrom(s => s.Set.Name))
                 .ForMember(dto => dto.RarityName,
                             opt => opt.MapFrom(r => r.Rarity.Name))
-                .ForMember(dto => dto.ColorNames,
-                            opt => opt.MapFrom(c => c.CardColors.Select(cc => cc.Color.Name)))
+                .ForMember(dto => dto.ColorCodes,
+                            opt => opt.MapFrom(c => c.CardColors.Select(cc => cc.Color.Code)))
                 .ForMember(dto => dto.TypeNames,
                             opt => opt.MapFrom(c => c.CardTypes.Select(ct => ct.Type.Name)));
         }
