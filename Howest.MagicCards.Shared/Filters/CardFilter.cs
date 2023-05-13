@@ -14,7 +14,5 @@ namespace Howest.MagicCards.Shared.Filters
         public string CardType { get; set; } = "";
         public string CardName { get; set; } = "";
         public string CardText { get; set; } = "";
-
-        public Boolean OrderByNameAscending { get; set; } = true;
     }
 }
