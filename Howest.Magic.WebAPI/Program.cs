@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = config.GetConnectionString("CardsCache");
-    options.InstanceName = "Cards";
+    options.InstanceName = "Cards_";
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -50,10 +50,6 @@ builder.Services.AddApiVersioning(o => {
     o.ReportApiVersions = true;
     o.AssumeDefaultVersionWhenUnspecified = true;
     o.DefaultApiVersion = new ApiVersion(1, 0);
-    o.ApiVersionReader = ApiVersionReader.Combine(
-                                    new QueryStringApiVersionReader("version"),
-                                    new HeaderApiVersionReader("api-version"),
-                                    new MediaTypeApiVersionReader("v"));
 });
 builder.Services.AddVersionedApiExplorer(
     options =>
