@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Howest.MagicCards.DAL.Models;
 using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.Shared.DTO;
-using Howest.MagicCards.Shared.Filters;
 using Howest.MagicCards.WebAPI.Wrappers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Howest.MagicCards.WebAPI.Controllers
 {
@@ -17,29 +13,29 @@ namespace Howest.MagicCards.WebAPI.Controllers
     [ApiVersion("1.5")]
     [Route("api/[controller]")]
     [ApiController]
-    public class SetsController : Controller
+    public class RaritiesController : Controller
     {
-        private const string _cacheKey = "Allsets";
+        private const string _cacheKey = "AllRarities";
         private readonly IMemoryCache _cache;
-        private readonly ISetRepository _setRepo;
+        private readonly IRarityRepository _rarityRepo;
         private readonly IMapper _mapper;
 
-        public SetsController(ISetRepository setRepository, IMapper mapper, IMemoryCache memoryCache)
+        public RaritiesController(IRarityRepository rarityRepository, IMapper mapper, IMemoryCache memoryCache)
         {
-            _setRepo = setRepository;
+            _rarityRepo = rarityRepository;
             _mapper = mapper;
             _cache = memoryCache;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(Response<IEnumerable<SetReadDTO>>), 200)]
+        [ProducesResponseType(typeof(Response<IEnumerable<RarityReadDTO>>), 200)]
         [ProducesResponseType(typeof(string), 500)]
-        public async Task<ActionResult<Response<IEnumerable<SetReadDTO>>>> GetSets()
+        public async Task<ActionResult<Response<IEnumerable<RarityReadDTO>>>> GetRarities()
         {
-            if (!_cache.TryGetValue(_cacheKey, out IEnumerable<SetReadDTO> cachedResult))
+            if (!_cache.TryGetValue(_cacheKey, out IEnumerable<RarityReadDTO> cachedResult))
             {
-                cachedResult = await _setRepo.GetAllSets()
-                                             .ProjectTo<SetReadDTO>(_mapper.ConfigurationProvider)
+                cachedResult = await _rarityRepo.GetAllRarities()
+                                             .ProjectTo<RarityReadDTO>(_mapper.ConfigurationProvider)
                                              .ToListAsync();
 
                 MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()

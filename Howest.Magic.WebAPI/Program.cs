@@ -10,7 +10,6 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager config = builder.Configuration;
 
-// Add services to the container.
 builder.Services.AddControllers();
 
 builder.Services.AddMemoryCache();
@@ -32,15 +31,16 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
 builder.Services.AddDbContext<MyCardsContext>
     (options => options.UseSqlServer(config.GetConnectionString("CardsDb")));
 builder.Services.AddScoped<ICardRepository, SqlCardRepository>();
 builder.Services.AddScoped<ISetRepository, SqlSetRepository>();
+builder.Services.AddScoped<IRarityRepository, SqlRarityRepository>();
 
 builder.Services.AddAutoMapper(new System.Type[] {
     typeof(CardProfile),
-    typeof(SetProfile)
+    typeof(SetProfile),
+    typeof(RarityProfile)
 });
 
 builder.Services.AddApiVersioning(o => {
@@ -51,25 +51,13 @@ builder.Services.AddApiVersioning(o => {
 builder.Services.AddVersionedApiExplorer(
     options =>
     {
-        // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
-        // note: the specified format code will format the version as "'v'major[.minor][-status]"
         options.GroupNameFormat = "'v'VVV";
-
-        // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
-        // can also be used to control the format of the API version in route templates
         options.SubstituteApiVersionInUrl = true;
     }
 );
 
-
-
-
-
-
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
