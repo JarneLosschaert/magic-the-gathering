@@ -23,10 +23,10 @@ namespace Howest.MagicCards.DAL.Models
         public virtual DbSet<CardColor> CardColors { get; set; }
         public virtual DbSet<CardType> CardTypes { get; set; }
         public virtual DbSet<Artist> Artists { get; set; }
-        public virtual DbSet<Color> Color { get; set; }
-        public virtual DbSet<Rarity> Rarity { get; set; }
-        public virtual DbSet<Set> Set { get; set; }
-        public virtual DbSet<Type> Type { get; set; }
+        public virtual DbSet<Color> Colors { get; set; }
+        public virtual DbSet<Rarity> Rarities { get; set; }
+        public virtual DbSet<Set> Sets { get; set; }
+        public virtual DbSet<Type> Types { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

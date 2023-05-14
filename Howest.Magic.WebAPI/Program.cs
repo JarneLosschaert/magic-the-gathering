@@ -13,13 +13,8 @@ ConfigurationManager config = builder.Configuration;
 // Add services to the container.
 builder.Services.AddControllers();
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = config.GetConnectionString("CardsCache");
-    options.InstanceName = "Cards_";
-});
+builder.Services.AddMemoryCache();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -27,7 +22,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "Magic cards API version 1.5",
         Version = "v1.5",
-        Description = "API to manage the magic cards"
+        Description = "API to manage the magic cards with sorting and detail of a card"
     });
     c.SwaggerDoc("v1.1", new OpenApiInfo
     {
@@ -41,9 +36,11 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<MyCardsContext>
     (options => options.UseSqlServer(config.GetConnectionString("CardsDb")));
 builder.Services.AddScoped<ICardRepository, SqlCardRepository>();
+builder.Services.AddScoped<ISetRepository, SqlSetRepository>();
 
 builder.Services.AddAutoMapper(new System.Type[] {
-    typeof(CardProfile)
+    typeof(CardProfile),
+    typeof(SetProfile)
 });
 
 builder.Services.AddApiVersioning(o => {

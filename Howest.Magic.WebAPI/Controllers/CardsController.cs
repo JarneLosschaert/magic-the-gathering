@@ -16,19 +16,15 @@ namespace Howest.MagicCards.WebAPI.Controllers
     [ApiVersion("1.5")]
     [Route("api/[controller]")]
     [ApiController]
-    [ApiConventionType(typeof(DefaultApiConventions))]
     public class CardsController : ControllerBase
     {
-        private const string _cacheKey = "Allcards";
-        private readonly IDistributedCache _cache;
         private readonly ICardRepository _cardRepo;
         private readonly IMapper _mapper;
 
-        public CardsController(ICardRepository cardRepository, IMapper mapper, IDistributedCache memoryCache)
+        public CardsController(ICardRepository cardRepository, IMapper mapper)
         {
             _cardRepo = cardRepository;
             _mapper = mapper;
-            _cache = memoryCache;
         }
 
         [MapToApiVersion("1.5")]
