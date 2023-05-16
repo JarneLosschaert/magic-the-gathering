@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace Howest.MagicCards.DAL.Repositories
 {
-    public interface ICardRepository
+    public interface IArtistRepository
     {
-        IQueryable<Card> GetAllCards();
-        Task<Card?> GetCardbyIdAsync(int id);
-        IQueryable<Card> GetCardsByArtist(string artist);
-
+        IQueryable<Artist> GetAllArtists();
     }
 }

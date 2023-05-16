@@ -47,5 +47,19 @@ namespace Howest.MagicCards.DAL.Repositories
 
             return singleCard;
         }
+        public IQueryable<Card> GetCardsByArtist(string artist)
+        {
+            IQueryable<Card> allCards = _db.Cards
+                                            .Include(c => c.Artist)
+                                            .Include(c => c.Rarity)
+                                            .Include(c => c.Set)
+                                            .Include(c => c.CardColors)
+                                                .ThenInclude(cc => cc.Color)
+                                            .Include(c => c.CardTypes)
+                                                .ThenInclude(ct => ct.Type)
+                                            .Where(c => c.Artist.FullName.Contains(artist))
+                                            .Select(c => c);
+            return allCards;
+        }
     }
 }

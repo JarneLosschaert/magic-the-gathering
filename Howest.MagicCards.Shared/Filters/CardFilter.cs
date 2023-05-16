@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Howest.MagicCards.Shared.Filters
 {
-    public class CardFilter : PaginationFilter
+    public class CardFilter
     {
         public string SetName { get; set; } = "";
         public string ArtistName { get; set; } = "";

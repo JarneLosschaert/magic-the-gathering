@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Howest.MagicCards.Shared.Filters
 {
-    public class CardSorter : PaginationFilter
+    public class CardSorter
     {
         public Boolean OrderByNameAscending { get; set; } = true;
     }
