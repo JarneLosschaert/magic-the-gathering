@@ -9,6 +9,7 @@ using Howest.MagicCards.WebAPI.Wrappers;
 using Howest.MagicCards.Shared.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Caching.Distributed;
+using Howest.MagicCards.Shared.Extensions;
 
 namespace Howest.MagicCards.WebAPI.Controllers
 {
@@ -38,12 +39,9 @@ namespace Howest.MagicCards.WebAPI.Controllers
             {
                 return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
                     ? Ok(await allCards
-                            .Where(c => c.Set.Name.Contains(filter.SetName) && c.Artist.FullName.Contains(filter.ArtistName) && c.Rarity.Name.Contains(filter.RarityName))
-                            .Where(c => c.Type.Contains(filter.CardType) && c.Name.Contains(filter.CardName) && c.Text.Contains(filter.CardText))
-                            .OrderBy(c => sorter.OrderByNameAscending ? c.Name : null)
-                            .ThenByDescending(c => sorter.OrderByNameAscending ? null : c.Name)
-                            .Skip((filter.PageNumber - 1) * filter.PageSize)
-                            .Take(filter.PageSize)
+                            .ToFilteredList(filter)
+                            .ToSortedList(sorter)
+                            .ToPagedList(filter)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
                             .ToListAsync())
                     : NotFound(new Response<CardDetailReadDTO>()
@@ -77,10 +75,8 @@ namespace Howest.MagicCards.WebAPI.Controllers
             {
                 return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
                     ? Ok(await allCards
-                            .Where(c => c.Set.Name.Contains(filter.SetName) && c.Artist.FullName.Contains(filter.ArtistName) && c.Rarity.Name.Contains(filter.RarityName))
-                            .Where(c => c.Type.Contains(filter.CardType) && c.Name.Contains(filter.CardName) && c.Text.Contains(filter.CardText))
-                            .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
-                            .Take(paginationFilter.PageSize)
+                            .ToFilteredList(filter)
+                            .ToPagedList(filter)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
                             .ToListAsync())
                     : NotFound(new Response<CardDetailReadDTO>()
