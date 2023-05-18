@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.5.2" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-preview.4.23259.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -13,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Howest.Magic.DAL\Howest.MagicCards.DAL.csproj" />
+    <ProjectReference Include="..\Howest.MagicCards.Shared\Howest.MagicCards.Shared.csproj" />
   </ItemGroup>
 
 </Project>

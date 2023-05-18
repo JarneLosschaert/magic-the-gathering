@@ -1,5 +1,7 @@
-﻿using Howest.MagicCards.DAL.Models;
+﻿using FluentValidation;
+using Howest.MagicCards.DAL.Models;
 using Howest.MagicCards.DAL.Repositories;
+using Howest.MagicCards.Shared.Validation;
 
 namespace Howest.MagicCards.MinimalAPI.Mappings
 {
@@ -16,9 +18,15 @@ namespace Howest.MagicCards.MinimalAPI.Mappings
 
             }).WithTags("Deck");
 
-            app.MapPost($"{urlPrefix}/cards", (JsonDeckRepository deckRepo, CardDeck newCard) =>
+            app.MapPost($"{urlPrefix}/cards", async (JsonDeckRepository deckRepo, CardDeck newCard, IValidator<CardDeck> cardDeckValidator) =>
             {
+                var validationResult = await cardDeckValidator.ValidateAsync(newCard);
+                if (!validationResult.IsValid)
+                {
+                    return Results.BadRequest(validationResult.Errors);
+                }
                 deckRepo.AddCard(newCard);
+                return Results.Ok();
             }
             ).Accepts<CardDeck>("application/json")
              .WithTags("Deck");
@@ -35,6 +43,7 @@ namespace Howest.MagicCards.MinimalAPI.Mappings
         public static void AddCardsServices(this IServiceCollection services)
         {
             services.AddSingleton<JsonDeckRepository>();
+            services.AddTransient<IValidator<CardDeck>, CardDeckCustomValidator>();
         }
 
     }

@@ -1,10 +1,14 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Howest.MagicCards.DAL.Models;
 using Howest.MagicCards.MinimalAPI.Mappings;
+using Howest.MagicCards.Shared.Validation;
 
 const string commonPrefix = "/api";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCardsServices();
+builder.Services.AddCardsServices(); 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -22,4 +26,4 @@ app.UseHttpsRedirection();
 
 app.MapCardsEndpoints(urlPrefix);
 
-app.Run();
+    app.Run();
