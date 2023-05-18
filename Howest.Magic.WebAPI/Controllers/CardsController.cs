@@ -15,7 +15,7 @@ namespace Howest.MagicCards.WebAPI.Controllers
     [ApiVersion("1.1")]
     [ApiVersion("1.5")]
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController] 
     public class CardsController : ControllerBase
     {
         private readonly ICardRepository _cardRepo;
@@ -32,7 +32,7 @@ namespace Howest.MagicCards.WebAPI.Controllers
         [ProducesResponseType(typeof(PagedResponse<IEnumerable<CardDetailReadDTO>>), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(string), 500)]
-        public async Task<ActionResult<PagedResponse<IEnumerable<CardDetailReadDTO>>>> GetCardsSorted([FromQuery] PaginationFilter paginationFilter, [FromQuery] CardFilter filter, [FromQuery] CardSorter sorter)
+        public async Task<ActionResult<PagedResponse<IEnumerable<CardDetailReadDTO>>>> GetCardsSorted([FromQuery] CardFilter filter, [FromQuery] CardSorter sorter)
         {
             try
             {
@@ -42,8 +42,8 @@ namespace Howest.MagicCards.WebAPI.Controllers
                             .Where(c => c.Type.Contains(filter.CardType) && c.Name.Contains(filter.CardName) && c.Text.Contains(filter.CardText))
                             .OrderBy(c => sorter.OrderByNameAscending ? c.Name : null)
                             .ThenByDescending(c => sorter.OrderByNameAscending ? null : c.Name)
-                            .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
-                            .Take(paginationFilter.PageSize)
+                            .Skip((filter.PageNumber - 1) * filter.PageSize)
+                            .Take(filter.PageSize)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
                             .ToListAsync())
                     : NotFound(new Response<CardDetailReadDTO>()

@@ -40,6 +40,7 @@ builder.Services.AddScoped<IRarityRepository, SqlRarityRepository>();
 builder.Services.AddAutoMapper(new System.Type[] {
     typeof(CardProfile),
     typeof(SetProfile),
+    typeof(RarityProfile),
     typeof(RarityProfile)
 });
 
@@ -66,7 +67,6 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1.5/swagger.json", "My Magic cards API v1.5");
         c.SwaggerEndpoint("/swagger/v1.1/swagger.json", "My Magic cards API v1.1");
     });
-
 }
 
 app.UseHttpsRedirection();
