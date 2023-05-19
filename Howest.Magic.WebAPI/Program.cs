@@ -40,7 +40,6 @@ builder.Services.AddScoped<IRarityRepository, SqlRarityRepository>();
 builder.Services.AddAutoMapper(new System.Type[] {
     typeof(CardProfile),
     typeof(SetProfile),
-    typeof(RarityProfile),
     typeof(RarityProfile)
 });
 

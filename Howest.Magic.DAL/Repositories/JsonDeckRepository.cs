@@ -11,7 +11,7 @@ namespace Howest.MagicCards.DAL.Repositories
 {
     public class JsonDeckRepository : IDeckRepository
     {
-        private readonly string _filePath = "./data/Deck.json";
+        private readonly string _filePath = "./Data/Deck.json";
 
         public IQueryable<CardDeck> GetAllCards()
         {

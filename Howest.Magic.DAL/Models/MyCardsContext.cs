@@ -46,6 +46,7 @@ namespace Howest.MagicCards.DAL.Models
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("full_name");
+
             });
 
             modelBuilder.Entity<Type>(entity =>

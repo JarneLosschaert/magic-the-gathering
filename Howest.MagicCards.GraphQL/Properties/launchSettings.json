@@ -12,6 +12,7 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
+      "launchUrl": "ui/playground",
       "applicationUrl": "https://localhost:7116;http://localhost:5116",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -20,7 +21,6 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "ui/playground",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

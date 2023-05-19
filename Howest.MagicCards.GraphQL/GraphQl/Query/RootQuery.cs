@@ -2,6 +2,7 @@
 using GraphQL.Types;
 using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.GraphQL.GraphQl.Types;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Howest.MagicCards.GraphQL.GraphQl.Query
 {
@@ -15,65 +16,65 @@ namespace Howest.MagicCards.GraphQL.GraphQl.Query
 
             #region Cards
             Field<ListGraphType<CardType>>(
-                "Cards",
+                "getAllCards",
                 Description = "Get all cards",
-                resolve: context =>
-                {
-                    return cardRepository
-                                .GetAllCards()
-                                .ToList();
-                }
-            );
-
-            Field<ListGraphType<CardType>>(
-                "filter",
-                Description = "Get all cards with filters",
                 arguments: new QueryArguments
                 {
-                    new QueryArgument<StringGraphType> { Name = "power" },
-                    new QueryArgument<StringGraphType> { Name = "toughness" }
+                    new QueryArgument<IntGraphType> { Name = "power" },
+                    new QueryArgument<IntGraphType> { Name = "toughness" }
                 },
                 resolve: context =>
                 {
-                    string power = context.GetArgument<string>("power");
-                    string toughness = context.GetArgument<string>("toughness");
-                    return cardRepository
-                                .GetAllCards()
-                                .Where(c => c.Power == power && c.Toughness == toughness)
-                                .ToList();
+                    string power = context.GetArgument<int?>("power").ToString();
+                    string toughness = context.GetArgument<int?>("toughness").ToString();
+
+                    return cardRepository.GetAllCards().Where(c => 
+                        string.IsNullOrEmpty(power) || c.Power == power && 
+                        string.IsNullOrEmpty(toughness) || c.Toughness == toughness
+                    ).ToList();
                 }
-            ); ;
-
-            Field<ListGraphType<CardType>>(
-               "cardsbyartist",
-               Description = "Get the all cards from a given artist",
-               arguments: new QueryArguments
-               {
-               new  QueryArgument<NonNullGraphType<StringGraphType>> { Name = "artist" }
-               },
-               resolve: context =>
-               {
-                   string artist = context.GetArgument<string>("artist");
-
-                   return cardRepository.GetCardsByArtist(artist)
-                                        .ToList();
-               }
             );
             #endregion
 
             #region Artists
             Field<ListGraphType<ArtistType>>(
-                "Publishers",
+                "getAllArtists",
                 Description = "Get all artists",
+                arguments: new QueryArguments
+                {
+                    new QueryArgument<IntGraphType> { Name = "limit" }
+                },
                 resolve: context =>
                 {
-                    return artistRepository
-                                .GetAllArtists()
-                                .ToList();
+                    int? limit = context.GetArgument<int?>("limit");
+
+                    var query = artistRepository.GetAllArtists();
+                    if (limit != null)
+                    {
+                        query = query.Take(limit.Value);
+                    }
+
+                    return query.ToList();
                 }
             );
-            #endregion
 
+            Field<ArtistType>(
+               "getArtistById",
+               Description = "Get the artist by id",
+               arguments: new QueryArguments
+               {
+               new  QueryArgument<NonNullGraphType<IntGraphType>> { Name = "id" }
+               },
+               resolve: context =>
+               {
+                   int id = context.GetArgument<int>("id");
+
+                   return artistRepository
+                   .GetAllArtists()
+                   .FirstOrDefault(a => a.Id == id);
+               }
+            );
+            #endregion
         }
     }
 }

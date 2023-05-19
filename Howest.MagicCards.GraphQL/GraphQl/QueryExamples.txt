@@ -1,0 +1,101 @@
+﻿// Get all cards
+
+query {
+  getAllCards {
+    id
+    name
+    manaCost
+    convertedManaCost
+    type
+    text
+    flavor
+    number
+    power
+    toughness
+    layout
+    mutiverseId
+    originalImageUrl
+    image
+    originalText
+    originalType
+    mtgId
+    variations
+    artist {
+      id
+      fullName
+    }
+  }
+}
+
+// Get all cards with a filter (one of the two filters is also possible)
+
+query {
+  getAllCards(power:4, toughness:6) {
+    id
+    name
+    manaCost
+    convertedManaCost
+    type
+    text
+    flavor
+    number
+    power
+    toughness
+    layout
+    mutiverseId
+    originalImageUrl
+    image
+    originalText
+    originalType
+    mtgId
+    variations
+    artist {
+      id
+      fullName
+    }
+  }
+}
+
+// Get all artists
+
+query {
+  getAllArtists {
+    id
+    fullName
+    cards {
+      id
+    	name
+    	power
+    	toughness
+    }
+  }
+}
+
+// Get all artists with a limit
+
+query {
+  getAllArtists(limit:8) {
+    id
+    fullName
+    cards {
+      id
+    	name
+    	power
+    	toughness
+    }
+  }
+}
+
+// get artist by id
+
+query {
+  getArtistById(id:3) {
+    id
+    fullName
+    cards {
+      id
+    	name
+    	power
+    	toughness
+    }
+  }

@@ -3,6 +3,8 @@ using GraphQL.Server.Ui.Playground;
 using Howest.MagicCards.DAL.Models;
 using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.GraphQL.GraphQl.Types;
+using Howest.MagicCards.Shared.DTO;
+using Howest.MagicCards.Shared.Mappings;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

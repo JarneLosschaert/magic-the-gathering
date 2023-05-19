@@ -26,4 +26,4 @@ app.UseHttpsRedirection();
 
 app.MapCardsEndpoints(urlPrefix);
 
-    app.Run();
+app.Run();
