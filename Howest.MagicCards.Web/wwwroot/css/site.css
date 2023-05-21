@@ -150,6 +150,7 @@ h1,h2,h3 {
         padding: 1rem;
         background: var(--blue);
         border-radius: 0.5rem;
+        cursor: pointer;
     }
 
 .card img {
@@ -193,6 +194,7 @@ h1,h2,h3 {
     .card-deck p {
         margin: auto auto auto 0;
         padding-left: 0.3rem;
+        cursor: pointer;
     }
 
     .card-deck button {

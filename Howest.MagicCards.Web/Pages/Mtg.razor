@@ -36,8 +36,12 @@
             </div>
             <div class="form-group">
                 <label for="RarityName">Rarity:</label>
-                <InputText id="RarityName" @bind-Value="@_filter.RarityName" class="form-control"></InputText>
-                <ValidationMessage For="@(() => _filter.RarityName)" />
+                <InputSelect id="RarityName" @bind-Value="@_filter.RarityName" class="form-control">
+                    @foreach (RarityReadDTO rarity in _rarities)
+                    {
+                        <option value="@rarity.Name">@rarity.Name</option>
+                    }
+                </InputSelect>
             </div>
             @if (_filter.OrderByNameAscending)
             {
@@ -70,10 +74,10 @@
                         <div class="card-info">
                             <img src="@card.OriginalImageUrl" alt="@card.Name" />
                             <div class="card-info-detail">
-                                <p>Type: @card.Type</p>
-                                <p>Set: @card.SetName</p>
-                                <p>Artist name: @card.ArtistFullName</p>
-                                <p>Rarity: @card.RarityName</p>
+                                <p><em>Type:</em> @card.Type</p>
+                                <p><em>Set:</em> @card.SetName</p>
+                                <p><em>Artist name:</em> @card.ArtistFullName</p>
+                                <p><em>Rarity:</em> @card.RarityName</p>
                             </div>
                         </div>
                         <p>@card.Text</p>

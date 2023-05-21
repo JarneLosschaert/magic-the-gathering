@@ -36,11 +36,13 @@ builder.Services.AddDbContext<MyCardsContext>
 builder.Services.AddScoped<ICardRepository, SqlCardRepository>();
 builder.Services.AddScoped<ISetRepository, SqlSetRepository>();
 builder.Services.AddScoped<IRarityRepository, SqlRarityRepository>();
+builder.Services.AddScoped<IArtistRepository, SqlArtistRepository>();
 
 builder.Services.AddAutoMapper(new System.Type[] {
     typeof(CardProfile),
     typeof(SetProfile),
-    typeof(RarityProfile)
+    typeof(RarityProfile),
+    typeof(ArtistProfile)
 });
 
 builder.Services.AddApiVersioning(o => {

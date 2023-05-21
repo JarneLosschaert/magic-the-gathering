@@ -23,6 +23,7 @@ public partial class Mtg
 
     private IEnumerable<CardDetailReadDTO> _cards = null;
     private IEnumerable<CardDeck> _deck = null;
+    private IEnumerable<RarityReadDTO> _rarities = new List<RarityReadDTO>();
     private readonly JsonSerializerOptions _jsonOptions;
     private HttpClient _httpClient;
     private HttpClient _httpClientDeck;
@@ -46,6 +47,7 @@ public partial class Mtg
         _httpClientDeck = HttpClientFactory.CreateClient("DeckApi");
         await LoadCards();
         await LoadDeck();
+        await LoadRarities();
     }
 
     private async Task LoadCards()
@@ -75,6 +77,26 @@ public partial class Mtg
         else
         {
             _cards = new List<CardDetailReadDTO>();
+        }
+    }
+
+    private async Task LoadRarities()
+    {
+        HttpResponseMessage response = await _httpClient.GetAsync("rarities");
+
+        string apiResponse = await response.Content.ReadAsStringAsync();
+
+        IEnumerable<RarityReadDTO> StartRarities = new List<RarityReadDTO>(new RarityReadDTO[] { new RarityReadDTO { Id = 0, Name = "", Code = "" }});
+
+        if (response.IsSuccessStatusCode)
+        {
+            IEnumerable<RarityReadDTO> result =
+                   JsonSerializer.Deserialize<IEnumerable<RarityReadDTO>>(apiResponse, _jsonOptions);
+            _rarities = StartRarities.Concat(result);
+        }
+        else
+        {
+            _rarities = new List<RarityReadDTO>();
         }
     }
 
