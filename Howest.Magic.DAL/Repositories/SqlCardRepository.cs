@@ -47,7 +47,7 @@ namespace Howest.MagicCards.DAL.Repositories
 
             return singleCard;
         }
-        public IQueryable<Card> GetCardsByArtist(string artist)
+        public IQueryable<Card> GetCardsByArtist(long id)
         {
             IQueryable<Card> allCards = _db.Cards
                                             .Include(c => c.Artist)
@@ -57,7 +57,7 @@ namespace Howest.MagicCards.DAL.Repositories
                                                 .ThenInclude(cc => cc.Color)
                                             .Include(c => c.CardTypes)
                                                 .ThenInclude(ct => ct.Type)
-                                            .Where(c => c.Artist.FullName.Contains(artist))
+                                            .Where(c => c.Artist.Id == id)
                                             .Select(c => c);
             return allCards;
         }

@@ -38,12 +38,16 @@ namespace Howest.MagicCards.WebAPI.Controllers
             try
             {
                 return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
-                    ? Ok(await allCards
+                    ? Ok(new PagedResponse<IEnumerable<CardDetailReadDTO>>(
+                        await allCards
                             .ToFilteredList(filter)
                             .ToSortedList(sorter)
                             .ToPagedList(filter)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
-                            .ToListAsync())
+                            .ToListAsync(), filter.PageNumber, filter.PageSize)
+                    {
+                        TotalRecords = allCards.ToFilteredList(filter).Count()
+                    })
                     : NotFound(new Response<CardDetailReadDTO>()
                     {
                         Succeeded = false,
@@ -74,11 +78,15 @@ namespace Howest.MagicCards.WebAPI.Controllers
             try
             {
                 return (_cardRepo.GetAllCards() is IQueryable<Card> allCards)
-                    ? Ok(await allCards
+                    ? Ok(new PagedResponse<IEnumerable<CardDetailReadDTO>>(
+                        await allCards
                             .ToFilteredList(filter)
                             .ToPagedList(filter)
                             .ProjectTo<CardDetailReadDTO>(_mapper.ConfigurationProvider)
-                            .ToListAsync())
+                            .ToListAsync(), filter.PageNumber, filter.PageSize)
+                    {
+                        TotalRecords = allCards.ToFilteredList(filter).Count()
+                    })
                     : NotFound(new Response<CardDetailReadDTO>()
                     {
                         Succeeded = false,

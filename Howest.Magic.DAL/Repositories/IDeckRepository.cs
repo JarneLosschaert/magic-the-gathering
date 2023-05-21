@@ -12,5 +12,6 @@ namespace Howest.MagicCards.DAL.Repositories
         IQueryable<CardDeck> GetAllCards();
         void AddCard(CardDeck card);
         bool RemoveCard(int id);
+        void ClearAllCards();
     }
 }

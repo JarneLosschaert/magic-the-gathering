@@ -38,6 +38,12 @@ namespace Howest.MagicCards.MinimalAPI.Mappings
                     : Results.NotFound($"No card with id {id} found");
             }
             ).WithTags("Deck");
+
+            app.MapDelete($"{urlPrefix}/cards/", (JsonDeckRepository deckRepo) =>
+            {
+                deckRepo.ClearAllCards();
+            }
+            ).WithTags("Deck");
         }
 
         public static void AddCardsServices(this IServiceCollection services)

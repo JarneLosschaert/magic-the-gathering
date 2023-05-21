@@ -27,6 +27,7 @@ namespace Howest.MagicCards.DAL.Repositories
         public async Task<Artist?> GetArtistbyIdAsync(int id)
         {
             Artist? singleArtist = await _db.Artists
+                .Include(a => a.Cards)
                 .SingleOrDefaultAsync(c => c.Id == id);
 
             return singleArtist;

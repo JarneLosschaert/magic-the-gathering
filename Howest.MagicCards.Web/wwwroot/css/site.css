@@ -1,5 +1,13 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+:root {
+    --darkpurple: #1C1833;
+    --white: hsl(0, 0%, 100%);
+    --red: #E60F0F;
+    --darkred: #A60C0C;
+    --blue: #03578C;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -61,4 +69,132 @@ a, .btn-link {
 
     .blazor-error-boundary::after {
         content: "An error has occurred."
+    }
+
+body {
+    background-color: var(--darkpurple);
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+.form-control {
+    background: var(--blue);
+    color: var(--white);
+}
+
+.form-control:focus {
+    background: var(--blue);
+    color: var(--white);
+}
+
+button {
+    background: var(--red);
+    color: var(--white);
+    border-radius: 0.3rem;
+}
+
+p, label {
+    color: var(--white)
+}
+
+h1,h2,h3 {
+    font-weight: bold;
+    color: var(--red)
+}
+
+.all-cards {
+    width: 80%;
+}
+
+.filter {
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+    .filter button {
+        margin-top: auto;
+        padding: 0.3rem;
+    }
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    width: 30%;
+    margin: 1rem auto
+}
+
+.pagination p {
+    margin: auto 0;
+}
+
+.cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+    margin-right: 2rem;
+}
+
+    .cards .card {
+        list-style-type: none;
+        width: 30%;
+        padding: 1rem;
+        background: var(--blue);
+        border-radius: 0.5rem;
+    }
+
+.card img {
+    width: 45%;
+    height: 45%;
+}
+
+.cards .card .card-info {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cards h3 {
+    text-align: center;
+}
+
+.my-deck {
+    width: 20%;
+    padding-right: 2rem;
+    text-align: center;
+    padding-top: 1rem;
+    border-left: 0.2rem solid var(--white);
+}
+
+.deck {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.card-deck {
+    margin-top: 1rem;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+    .card-deck p {
+        margin: auto auto auto 0;
+        padding-left: 0.3rem;
+    }
+
+    .card-deck button {
+        width: 15%;
     }

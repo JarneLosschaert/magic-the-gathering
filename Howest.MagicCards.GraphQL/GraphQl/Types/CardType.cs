@@ -1,5 +1,7 @@
 ﻿using GraphQL.Types;
+using GraphQLParser.AST;
 using Howest.MagicCards.DAL.Models;
+using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.Shared.DTO;
 
 namespace Howest.MagicCards.GraphQL.GraphQl.Types
@@ -27,8 +29,6 @@ namespace Howest.MagicCards.GraphQL.GraphQl.Types
             Field(c => c.OriginalText, nullable: true);
             Field(c => c.OriginalType, nullable: true);
             Field(c => c.MtgId);
-            Field(c => c.Variations, nullable: true);
-            Field(c => c.Artist, type: typeof(ArtistType));
         }
     }
 }

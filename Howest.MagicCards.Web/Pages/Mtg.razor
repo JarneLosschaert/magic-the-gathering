@@ -1,0 +1,108 @@
+﻿@page "/"
+@using Howest.MagicCards.DAL.Models;
+@using Howest.MagicCards.Shared.DTO;
+
+<PageTitle>Magic The Gathering</PageTitle>
+<main>
+
+    <article class="all-cards">
+        <EditForm Model="@_filter" OnValidSubmit="@LoadCards" class="filter">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label for="CardName">Card name:</label>
+                <InputText id="CardName" @bind-Value="@_filter.CardName" class="form-control"></InputText>
+                <ValidationMessage For="@(() => _filter.CardName)" />
+            </div>
+            <div class="form-group">
+                <label for="CardType">Card type:</label>
+                <InputText id="CardType" @bind-Value="@_filter.CardType" class="form-control"></InputText>
+                <ValidationMessage For="@(() => _filter.CardType)" />
+            </div>
+            <div class="form-group">
+                <label for="CardText">Card text:</label>
+                <InputText id="CardText" @bind-Value="@_filter.CardText" class="form-control"></InputText>
+                <ValidationMessage For="@(() => _filter.CardText)" />
+            </div>
+            <div class="form-group">
+                <label for="SetName">Set:</label>
+                <InputText id="SetName" @bind-Value="@_filter.SetName" class="form-control"></InputText>
+                <ValidationMessage For="@(() => _filter.SetName)" />
+            </div>
+            <div class="form-group">
+                <label for="ArtistName">Artist Name:</label>
+                <InputText id="ArtistName" @bind-Value="@_filter.ArtistName" class="form-control"></InputText>
+                <ValidationMessage For="@(() => _filter.ArtistName)" />
+            </div>
+            <div class="form-group">
+                <label for="RarityName">Rarity:</label>
+                <InputText id="RarityName" @bind-Value="@_filter.RarityName" class="form-control"></InputText>
+                <ValidationMessage For="@(() => _filter.RarityName)" />
+            </div>
+            @if (_filter.OrderByNameAscending)
+            {
+                <button @onclick="ToggleSort" type="submit">Sort desc</button>
+            }
+            else
+            {
+                <button @onclick="ToggleSort" type="submit">Sort asc</button>
+            }
+            <button type="submit">Search</button>
+        </EditForm>
+
+        <div class="pagination">
+            <button @onclick="PreviousPage" disabled="@(_PageNumber == 1)">Previous</button>
+            <p>Page @_PageNumber of @_totalPages</p>
+            <button @onclick="NextPage" disabled="@(_PageNumber == _totalPages)">Next</button>
+        </div>
+
+        @if (_cards == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <ul class="cards">
+                @foreach (CardDetailReadDTO card in _cards)
+                {
+                    <li class="card" @onclick="() => AddCard(card.Id, card.Name)">
+                        <h3>@card.Name</h3>
+                        <div class="card-info">
+                            <img src="@card.OriginalImageUrl" alt="@card.Name" />
+                            <div class="card-info-detail">
+                                <p>Type: @card.Type</p>
+                                <p>Set: @card.SetName</p>
+                                <p>Artist name: @card.ArtistFullName</p>
+                                <p>Rarity: @card.RarityName</p>
+                            </div>
+                        </div>
+                        <p>@card.Text</p>
+                    </li>
+                }
+            </ul>
+        }
+    </article>
+
+    <article class="my-deck">
+        <h2>My Deck</h2>
+        <h3>@_totalDeckCards/@_maxDeckCards</h3>
+        <button @onclick="ClearDeck">Clear deck</button>
+        @if (_deck == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <ul class="deck">
+                @foreach (CardDeck card in _deck)
+                {
+                    <li class="card-deck">
+                        <button @onclick="() => AddCard(card.Id, card.Name)">@card.Amount</button>
+                        <p @onclick="() => RemoveCard(card.Id)">@card.Name</p>
+                    </li>
+                }
+            </ul>
+        }
+    </article>
+</main>
+

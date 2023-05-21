@@ -1,4 +1,5 @@
 ﻿using GraphQL.Types;
+using GraphQLParser.AST;
 using Howest.MagicCards.DAL.Models;
 using Howest.MagicCards.Shared.DTO;
 

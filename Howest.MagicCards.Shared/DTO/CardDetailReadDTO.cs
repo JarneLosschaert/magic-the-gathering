@@ -29,7 +29,7 @@ namespace Howest.MagicCards.Shared.DTO
         public string OriginalType { get; init; }
         public string MtgId { get; init; }
         public string Variations { get; init; }
-        public IEnumerable<String> ColorCodes { get; init; }
+        public IEnumerable<String> ColorName { get; init; }
         public IEnumerable<String> TypeNames { get; init; }
     }
 }

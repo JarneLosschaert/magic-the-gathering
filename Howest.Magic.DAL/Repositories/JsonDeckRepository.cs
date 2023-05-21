@@ -24,7 +24,16 @@ namespace Howest.MagicCards.DAL.Repositories
         public void AddCard(CardDeck card)
         {
             var existingCards = GetAllCards().ToList();
-            existingCards.Add(card);
+            var existingCard = existingCards.FirstOrDefault(c => c.Id == card.Id);
+
+            if (existingCard != null)
+            {
+                existingCard.Amount++;
+            }
+            else
+            {
+                existingCards.Add(card);
+            }
 
             WriteCardsToFile(existingCards);
         }
@@ -36,12 +45,24 @@ namespace Howest.MagicCards.DAL.Repositories
 
             if (cardToRemove != null)
             {
-                existingCards.Remove(cardToRemove);
-                WriteCardsToFile(existingCards);
+                if (cardToRemove.Amount > 1)
+                {
+                    cardToRemove.Amount--;
+                    WriteCardsToFile(existingCards);
+                }
+                else
+                {
+                    existingCards.Remove(cardToRemove);
+                    WriteCardsToFile(existingCards);
+                }
                 return true;
             }
-
             return false;
+        }
+
+        public void ClearAllCards()
+        {
+            WriteCardsToFile(new List<CardDeck>());
         }
 
         private void WriteCardsToFile(List<CardDeck> cards)
